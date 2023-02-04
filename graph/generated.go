@@ -59,7 +59,7 @@ type ComplexityRoot struct {
 	Mutation struct {
 		CreateJobListing func(childComplexity int, input model.CreateJobListingInput) int
 		DeleteJobListing func(childComplexity int, id string) int
-		UpdateJobListing func(childComplexity int, id string, input model.UpdateJobListing) int
+		UpdateJobListing func(childComplexity int, id string, input model.UpdateJobListingInput) int
 	}
 
 	Query struct {
@@ -70,7 +70,7 @@ type ComplexityRoot struct {
 
 type MutationResolver interface {
 	CreateJobListing(ctx context.Context, input model.CreateJobListingInput) (*model.JobListing, error)
-	UpdateJobListing(ctx context.Context, id string, input model.UpdateJobListing) (*model.JobListing, error)
+	UpdateJobListing(ctx context.Context, id string, input model.UpdateJobListingInput) (*model.JobListing, error)
 	DeleteJobListing(ctx context.Context, id string) (*model.DeleteJobResponse, error)
 }
 type QueryResolver interface {
@@ -169,7 +169,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateJobListing(childComplexity, args["id"].(string), args["input"].(model.UpdateJobListing)), true
+		return e.complexity.Mutation.UpdateJobListing(childComplexity, args["id"].(string), args["input"].(model.UpdateJobListingInput)), true
 
 	case "Query.job":
 		if e.complexity.Query.Job == nil {
@@ -199,7 +199,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	ec := executionContext{rc, e}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputCreateJobListingInput,
-		ec.unmarshalInputUpdateJobListing,
+		ec.unmarshalInputUpdateJobListingInput,
 	)
 	first := true
 
@@ -321,10 +321,10 @@ func (ec *executionContext) field_Mutation_updateJobListing_args(ctx context.Con
 		}
 	}
 	args["id"] = arg0
-	var arg1 model.UpdateJobListing
+	var arg1 model.UpdateJobListingInput
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg1, err = ec.unmarshalNUpdateJobListing2golangᚑgraphQLᚋgraphᚋmodelᚐUpdateJobListing(ctx, tmp)
+		arg1, err = ec.unmarshalNUpdateJobListingInput2golangᚑgraphQLᚋgraphᚋmodelᚐUpdateJobListingInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -745,7 +745,7 @@ func (ec *executionContext) _Mutation_updateJobListing(ctx context.Context, fiel
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateJobListing(rctx, fc.Args["id"].(string), fc.Args["input"].(model.UpdateJobListing))
+		return ec.resolvers.Mutation().UpdateJobListing(rctx, fc.Args["id"].(string), fc.Args["input"].(model.UpdateJobListingInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2928,8 +2928,8 @@ func (ec *executionContext) unmarshalInputCreateJobListingInput(ctx context.Cont
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateJobListing(ctx context.Context, obj interface{}) (model.UpdateJobListing, error) {
-	var it model.UpdateJobListing
+func (ec *executionContext) unmarshalInputUpdateJobListingInput(ctx context.Context, obj interface{}) (model.UpdateJobListingInput, error) {
+	var it model.UpdateJobListingInput
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
@@ -3626,8 +3626,8 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 	return res
 }
 
-func (ec *executionContext) unmarshalNUpdateJobListing2golangᚑgraphQLᚋgraphᚋmodelᚐUpdateJobListing(ctx context.Context, v interface{}) (model.UpdateJobListing, error) {
-	res, err := ec.unmarshalInputUpdateJobListing(ctx, v)
+func (ec *executionContext) unmarshalNUpdateJobListingInput2golangᚑgraphQLᚋgraphᚋmodelᚐUpdateJobListingInput(ctx context.Context, v interface{}) (model.UpdateJobListingInput, error) {
+	res, err := ec.unmarshalInputUpdateJobListingInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 

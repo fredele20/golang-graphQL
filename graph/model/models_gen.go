@@ -21,7 +21,7 @@ type JobListing struct {
 	URL         string `json:"url"`
 }
 
-type UpdateJobListing struct {
+type UpdateJobListingInput struct {
 	Title       *string `json:"title"`
 	Description *string `json:"description"`
 	URL         *string `json:"url"`
